@@ -8,5 +8,6 @@ RUN curl -o apache-tomcat-9.0.34.tar.gz http://mirrors.standaloneinstaller.com/a
 tar zxf apache-tomcat-9.0.34.tar.gz &&\
 mv apache-tomcat-9.0.34 /usr/local/tomcat &&\
 rm apache-tomcat-9.0.34.tar.gz
+ADD target/cat-in-latex-0.0.1.war /usr/local/tomcat/webapps/cat-in-latex.war
 EXPOSE 8080
-CMD ["/usr/local/tomcat/bin/catalina.sh","start"]
+CMD ["/usr/local/tomcat/bin/catalina.sh","run"]
