@@ -91,7 +91,9 @@ $Hello world!$ %math mode
       </p>
     </div>
     <div class="column">
-      <img src="background.jpg" width="500">
+      <!--img src="background.jpg" width="500"-->
+      <img src="Cat-Dominatrix-White.jpg" width="500">
+      
     </div>
   </div>
 
