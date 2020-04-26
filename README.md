@@ -5,7 +5,10 @@ Installing this tool can sometimes be cumbersome and disk-space consumming (up t
 Imagine of a team composed of a lot of members, each of those choses to use LateX for documentation. They would need to install locally on their machine.
 Hence, using the concept of Software as a Service (SaaS) for such LateX builder could save a lot of IT resources.
 # Architecture
-
+As stated in the Dockerfile, I used the base-image of ivanpondal/alpine-latex:1.1.0 that contains a version of pdflateX.
+Tomcat 9.0.34 is installed additionally.
+This project consists of implementing the Front end JSP to allow user to provide the LateX sourcecode to build their document in pdf format.
+![Project Architecture](Architecture-CatInLatex.png)
 # How to build
 You will need Maven to build Java/JSP project.
 ```
