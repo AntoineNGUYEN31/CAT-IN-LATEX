@@ -1,11 +1,3 @@
-//package demotest;
- 
-import java.io.IOException;
-//import java.util.Base64;
-
-import org.apache.commons.codec.binary.Base64;
-//import java.util.Arrays;
- 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -13,27 +5,66 @@ import javax.servlet.annotation.WebInitParam;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
- 
-/**
- * Servlet implementation class guru_register
- */
+
+import java.io.IOException;
+import java.io.FileWriter;
+
+import java.io.File;
+
 @WebServlet("/process")
 public class process extends HttpServlet {
-    protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-      
-      String input1 = String.valueOf(request.getParameter("input1"));
-      if (request.getParameter("decode") != null) {
-        byte[] message = Base64.decodeBase64(input1.getBytes());
-        String res1=new String(message);
-        request.setAttribute("res1", res1);
-        request.setAttribute("preinput1", input1);
-      }else{
-        byte[] message = input1.getBytes();
-        String res1=Base64.encodeBase64String(message);
-        request.setAttribute("res1", res1); 
-        request.setAttribute("preinput1", input1);
-      }
-      // Redisplay JSP.
-      request.getRequestDispatcher("index.jsp").forward(request, response); 
+  protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+
+    String root = "";
+    // sub folder is unique to avoid conflicts due to multiple access to service.
+    // Epoch time is used for naming.
+    String subFolder = String.valueOf(System.currentTimeMillis()) + "/";
+    String log = "";
+
+    // read workspace, e.g. /usr/local/tomcat/webapps/cat-in-latex/ from resource
+    try {
+      confReader conf = new confReader("config.json");
+      root = conf.get("workspace");
+    } catch (Exception e) {
+      ;
     }
+
+    String workspace = root + subFolder;
+    File file = new File(workspace);
+    file.mkdirs();
+
+    // create .tex file in the subFolder
+    String fname = String.valueOf(request.getParameter("fname"));
+    String fcontent = String.valueOf(request.getParameter("fcontent"));
+    try {
+      FileWriter myWriter = new FileWriter(workspace + fname);
+      myWriter.write(fcontent);
+      myWriter.close();
+
+    } catch (IOException e) {
+      System.out.println("An error occurred: " + e);
+    }
+
+    // build project
+    String command = "cd " + workspace + "; pdflatex -interaction=nonstopmode " + fname + ">build.log 2>&1";
+    String[] cmd = { "/bin/sh", "-c", command };
+    Process process = Runtime.getRuntime().exec(cmd);
+
+    // wait for the lateX compilation to finish, and get log
+    try {
+      int exitValue = process.waitFor();
+      // get log data
+      fileToString f2s = new fileToString();
+      log = f2s.convert(workspace + "build.log");
+
+    } catch (Exception e) {
+      ;
+    }
+
+    // redirection with info
+    request.setAttribute("fout", subFolder + fname.replace(".tex", ".pdf"));
+    request.setAttribute("log", log);
+    request.setAttribute("status", "Pdf created successfully");
+    request.getRequestDispatcher("result.jsp").forward(request, response);
+  }
 }
