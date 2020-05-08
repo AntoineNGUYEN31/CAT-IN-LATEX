@@ -25,5 +25,11 @@ docker run -p 8080:8080 cat-in-latex
 ```
 Service can be accessed via : http://localhost:8080/cat-in-latex/
 
+Or you can also run by pulling an image from Docker hub
+```
+docker run -d --name=cat-in-latex -p 80:8080 antoinenguyen31/cat-in-latex:latest
+```
+Service will be available via : http://localhost/cat-in-latex/
+
 /!\ On demanded (not always available) public link to SaaS App "Cat In Latex": http://ec2-15-188-124-156.eu-west-3.compute.amazonaws.com/cat-in-latex/
 
