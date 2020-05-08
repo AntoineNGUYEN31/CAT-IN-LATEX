@@ -96,6 +96,7 @@ public class upload extends HttpServlet {
         String[] unzip_cmd = { "/bin/sh", "-c", command };
         process = Runtime.getRuntime().exec(unzip_cmd);
 
+        /*
         // search for tex file
         File f = new File(workspace);
         FilenameFilter filter = new FilenameFilter() {
@@ -108,7 +109,9 @@ public class upload extends HttpServlet {
         File[] files = f.listFiles(filter);
         //the only .tex file is expected
         String fname = files[0].getName();
-        //String fname = "main.tex";
+        */
+
+        String fname = "main.tex";
 
         // build
         command = "cd " + workspace + "; pdflatex -interaction=nonstopmode " + fname + ">build.log 2>&1";
