@@ -25,5 +25,5 @@ docker run -p 8080:8080 cat-in-latex
 ```
 Service can be accessed via : http://localhost:8080/cat-in-latex/
 
-/!\ On demanded (not always available) public link to SaaS App "Cat In Latex": https://ec2-15-188-124-156.eu-west-3.compute.amazonaws.com/cat-in-latex/
+/!\ On demanded (not always available) public link to SaaS App "Cat In Latex": http://ec2-15-188-124-156.eu-west-3.compute.amazonaws.com/cat-in-latex/
 
